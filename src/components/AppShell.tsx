@@ -173,12 +173,6 @@ export default function AppShell({
           <main className="min-w-0 flex-1">{children}</main>
         </div>
 
-        <footer className="border-t border-slate-200 bg-white">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-6 text-sm text-slate-400">
-            <p>小工具箱 - 纯前端运行，数据不会离开浏览器。</p>
-            <p>部署于 Azure Blob 静态网站。</p>
-          </div>
-        </footer>
       </div>
     </SidebarContext.Provider>
   );
