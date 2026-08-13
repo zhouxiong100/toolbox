@@ -32,14 +32,14 @@ npm run lint
 
 ## 内网 DNS 解析（本地 DoH 代理）
 
-浏览器无法发起原生 UDP 53 请求。若内网 DNS 不支持 DoH，可在能访问内网 DNS 的机器上运行本代理脚本，把工具的「本机代理」预设请求转发给内网 DNS：
+浏览器无法发起原生 UDP 53 请求。若内网 DNS 不支持 DoH，可在能访问内网 DNS 的机器上运行本代理脚本，把工具的「本机代理」预设请求转发给内网 DNS。脚本在仓库 `public/scripts/local-doh-proxy.js`，也可在 DNS 解析工具页直接下载。
 
 ```bash
 # 第一个参数为内网 DNS IP，第二个为监听端口（可选，默认 8800）
-node scripts/local-doh-proxy.js 192.168.181.51
+node local-doh-proxy.js 192.168.181.51
 ```
 
-DNS 解析工具页选择「本机代理（内网 DNS）」即可，请求会发往 `http://localhost:8800/resolve`（浏览器把 `localhost` 视为可信来源，无需证书）。
+DNS 解析工具页选择「本机代理（内网 DNS）」即可，请求会发往 `http://localhost:8800/resolve`（浏览器把 `localhost` 视为可信来源，无需证书）。需在本机安装 Node.js。
 
 若内网 DNS 支持 DoH 且有公网可信任证书，也可用「自定义」直接填写其 DoH 地址。
 

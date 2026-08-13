@@ -248,10 +248,17 @@ export default function DnsResolver() {
             {providerId === "local" && (
               <p className="mt-2 rounded bg-slate-50 px-2 py-1.5 text-xs leading-5 text-slate-500">
                 使用 <code className="font-mono">localhost:8800/resolve</code>
-                ，需先运行：
+                ，需先在本机运行本地代理（需安装 Node.js）：
                 <code className="mt-1 block rounded bg-slate-100 px-1 py-0.5 font-mono">
-                  node scripts/local-doh-proxy.js 192.168.181.51
+                  node local-doh-proxy.js 192.168.181.51
                 </code>
+                <a
+                  href="/scripts/local-doh-proxy.js"
+                  download
+                  className="mt-1.5 inline-flex items-center gap-1 font-medium text-blue-600 hover:underline"
+                >
+                  下载本地代理脚本（local-doh-proxy.js）
+                </a>
               </p>
             )}
           </div>
