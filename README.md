@@ -81,6 +81,33 @@ az storage blob upload-batch \
 - 如需去除尾斜杠限制、自定义域名与 HTTPS，可在前方接入 Azure CDN / Front Door，并添加规则：对不带文件扩展名且不以 `/` 结尾的请求重写/重定向补上 `/`
 - 每次改动后重新 `npm run build` 再运行部署脚本即可
 
+### GitHub Actions 自动部署
+
+推送 `main` 分支（或手动触发 `workflow_dispatch`）时，`.github/workflows/deploy.yml` 会自动执行：`npm ci` → `npm run build` → 登录 Azure → 上传 `out/` 到 `$web`。
+
+#### 一次性配置
+
+1. **创建服务主体**（仅需登录权限 `Storage Blob Data Contributor`，作用域收窄到该存储账户）：
+
+   ```bash
+   az ad sp create-for-rbac \
+     --name toolbox-cicd \
+     --role "Storage Blob Data Contributor" \
+     --scopes /subscriptions/<订阅ID>/resourceGroups/<资源组>/providers/Microsoft.Storage/storageAccounts/<账户名> \
+     --json-auth
+   ```
+
+   `--json-auth` 输出 JSON；旧版 az CLI 用 `--sdk-auth`（同格式）。
+
+2. **配置 GitHub 仓库 Settings → Secrets and variables → Actions**：
+
+   - Secrets → **New repository secret**：名称 `AZURE_CREDENTIALS`，值为上一步输出的 JSON（含 `clientId`、`clientSecret`、`tenantId`、`subscriptionId`）
+   - Variables → **New repository variable**：名称 `AZURE_STORAGE_ACCOUNT`，值为你的存储账户名
+
+3. **确保存储账户已启用静态网站**（索引 `index.html`、错误文档 `404.html`），否则上传成功但无法访问。
+
+之后每次 push 到 `main` 即自动部署。可在 Actions 页面查看日志、手动重跑（`workflow_dispatch`）。
+
 ## 添加新工具
 
 1. 在 `src/app/<工具路由>/page.tsx` 新建页面（服务端组件导出 `metadata`，渲染对应的客户端组件）
