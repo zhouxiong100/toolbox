@@ -116,7 +116,7 @@ export default function AppShell({
           </div>
         </header>
 
-        <div className="mx-auto flex w-full max-w-6xl flex-1">
+        <div className="flex w-full flex-1">
           <aside
             className={`shrink-0 overflow-hidden border-r border-slate-200 bg-white transition-all duration-200 ${
               collapsed ? "w-0 border-r-0" : "w-64"
