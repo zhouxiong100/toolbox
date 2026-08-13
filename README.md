@@ -60,18 +60,17 @@ DNS 解析工具页选择「本机代理（内网 DNS）」即可，请求会发
 .\scripts\deploy-azure.ps1 -StorageAccountName <你的存储账户名>
 ```
 
-脚本会执行 `az storage blob upload-batch` 将 `out/` 上传到 `$web` 容器（覆盖 + 删除多余文件），完成后输出站点访问地址。
+脚本会执行 `az storage blob sync` 将 `out/` 同步到 `$web` 容器（覆盖更新 + 删除多余文件），完成后输出站点访问地址。
 
 也可以手动执行：
 
 ```bash
-az storage blob upload-batch \
+az storage blob sync \
   --account-name <账户名> \
   --auth-mode login \
-  --destination '$web' \
+  --container '$web' \
   --source out \
-  --overwrite \
-  --delete-destination
+  --delete-destination true
 ```
 
 ### 说明

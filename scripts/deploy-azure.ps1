@@ -2,7 +2,7 @@ param(
     [Parameter(Mandatory = $true, HelpMessage = "存储账户名称，例如 mystoragetools")]
     [string]$StorageAccountName,
 
-    [Parameter(HelpMessage = "目标容器，静态网站固定为 $web")]
+    [Parameter(HelpMessage = '目标容器，静态网站固定为 $web')]
     [string]$ContainerName = '$web',
 
     [Parameter(HelpMessage = "构建输出目录（相对本脚本的上级目录）")]
@@ -43,13 +43,12 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "==> 上传 $outDir -> https://$StorageAccountName.blob.core.windows.net/$ContainerName" -ForegroundColor Cyan
-az storage blob upload-batch `
+az storage blob sync `
     --account-name $StorageAccountName `
     --auth-mode login `
-    --destination $ContainerName `
+    --container $ContainerName `
     --source $outDir `
-    --overwrite `
-    --delete-destination
+    --delete-destination true
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
